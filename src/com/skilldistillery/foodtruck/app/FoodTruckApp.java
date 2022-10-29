@@ -23,10 +23,10 @@ public class FoodTruckApp {
 		FoodTruck[] trucks = new FoodTruck[5];
 		int counter = 0;
 		
-		while (true) {
+		while (counter < 5) {
 			trucks[counter] = fta.userNewFoodTruck(scanner);
 			
-			if (counter == 4 || trucks[counter] == null) {
+			if (trucks[counter] == null) {
 				break;
 			}
 			counter++;
@@ -97,7 +97,7 @@ public class FoodTruckApp {
 
 	public FoodTruck highestRated(FoodTruck[] trucks) {
 		FoodTruck highestRatedTruck = null;
-		int highestRating = Integer.MIN_VALUE;
+		int highestRating = 0;
 
 		for (FoodTruck truck : trucks) {
 			if (truck != null && truck.getRating() > highestRating) {

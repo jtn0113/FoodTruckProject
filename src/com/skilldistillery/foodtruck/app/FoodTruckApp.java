@@ -8,42 +8,30 @@ public class FoodTruckApp {
 
 	public static void main(String[] args) {
 
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in).useDelimiter("\n");
 
 		FoodTruckApp fta = new FoodTruckApp();
+
+		FoodTruck[] trucks = fta.buildFoodTrucksArray(scanner, fta);
+
+		fta.menuResponseAction(scanner, trucks, fta);
+
+		scanner.close();
+	}
+	
+	public FoodTruck[] buildFoodTrucksArray(Scanner scanner, FoodTruckApp fta) {
 		FoodTruck[] trucks = new FoodTruck[5];
 		int counter = 0;
-
+		
 		while (true) {
 			trucks[counter] = fta.userNewFoodTruck(scanner);
-
+			
 			if (counter == 4 || trucks[counter] == null) {
 				break;
 			}
 			counter++;
 		}
-
-		boolean keepGoing = true;
-		while (keepGoing == true) {
-			switch (fta.showMenu(scanner)) {
-				case 1:
-					fta.showAllTrucks(trucks);
-					break;
-				case 2:
-					System.out.println("\n" + "The average rating of all food trucks is: " + fta.averageRating(trucks) + "\n");
-					break;
-				case 3:
-					System.out.println("\n" + "The highest rated truck is: " + fta.highestRated(trucks) + "\n");
-					break;
-				case 4:
-					keepGoing = false;
-					System.out.println("Dilly Dilly!");
-					break;
-				default:
-					break;
-			}
-		}
-		scanner.close();
+		return trucks;
 	}
 
 	public FoodTruck userNewFoodTruck(Scanner scanner) {
@@ -62,13 +50,36 @@ public class FoodTruckApp {
 		return ft;
 	}
 
-	public int showMenu(Scanner scanner) {
+	public void menuResponseAction(Scanner scanner, FoodTruck[] trucks, FoodTruckApp fta) {
+		boolean keepGoing = true;
+		while (keepGoing == true) {
+			switch (fta.showMenu(scanner)) {
+			case "1":
+				fta.showAllTrucks(trucks);
+				break;
+			case "2":
+				System.out.println("\n" + "The average rating of all food trucks is: " + fta.averageRating(trucks) + "\n");
+				break;
+			case "3":
+				System.out.println("\n" + "The highest rated truck is: " + fta.highestRated(trucks) + "\n");
+				break;
+			case "4":
+				keepGoing = false;
+				System.out.println("Dilly Dilly!");
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	public String showMenu(Scanner scanner) {
 		System.out.println("1.) List all existing food trucks.");
 		System.out.println("2.) See the average rating of food trucks.");
 		System.out.println("3.) Display the highest-rated food truck.");
 		System.out.println("4.) Quit the program.");
 
-		return scanner.nextInt();
+		return scanner.next();
 	}
 
 	public String averageRating(FoodTruck[] trucks) {
@@ -86,7 +97,7 @@ public class FoodTruckApp {
 
 	public FoodTruck highestRated(FoodTruck[] trucks) {
 		FoodTruck highestRatedTruck = null;
-		int highestRating = 1;
+		int highestRating = Integer.MIN_VALUE;
 
 		for (FoodTruck truck : trucks) {
 			if (truck != null && truck.getRating() > highestRating) {
@@ -94,8 +105,6 @@ public class FoodTruckApp {
 				highestRatedTruck = truck;
 			}
 		}
-
-		System.out.println(highestRating);
 		return highestRatedTruck;
 	}
 
